@@ -1,0 +1,108 @@
+/* 全局样式 */
+.App {
+  text-align: center;
+}
+
+/* 图表容器样式 */
+.chart-container {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .ant-layout-sider {
+    position: fixed !important;
+    left: -200px;
+    z-index: 999;
+    transition: left 0.3s;
+  }
+  
+  .ant-layout-sider.ant-layout-sider-collapsed {
+    left: 0;
+  }
+  
+  .ant-layout-content {
+    margin-left: 0 !important;
+  }
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 动画效果 */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 安全状态颜色 */
+.status-trusted {
+  color: #52c41a;
+}
+
+.status-suspicious {
+  color: #fa8c16;
+}
+
+.status-malicious {
+  color: #f5222d;
+}
+
+.status-unknown {
+  color: #8c8c8c;
+}
+
+/* 风险等级样式 */
+.risk-low {
+  background-color: #f6ffed;
+  border-color: #b7eb8f;
+  color: #52c41a;
+}
+
+.risk-medium {
+  background-color: #fff7e6;
+  border-color: #ffd591;
+  color: #fa8c16;
+}
+
+.risk-high {
+  background-color: #fff2e8;
+  border-color: #ffbb96;
+  color: #fa8c16;
+}
+
+.risk-critical {
+  background-color: #fff1f0;
+  border-color: #ffccc7;
+  color: #f5222d;
+}

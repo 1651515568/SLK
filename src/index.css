@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    background-color: #f5f5f5;
+  }
+}
+
+@layer components {
+  .security-card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6;
+  }
+  
+  .security-stat-card {
+    @apply bg-gradient-to-r from-white to-gray-50 rounded-lg border border-gray-200 p-6 shadow-sm;
+  }
+  
+  .device-status-trusted {
+    @apply bg-security-trusted text-white;
+  }
+  
+  .device-status-suspicious {
+    @apply bg-security-suspicious text-white;
+  }
+  
+  .device-status-malicious {
+    @apply bg-security-malicious text-white;
+  }
+  
+  .device-status-unknown {
+    @apply bg-security-unknown text-white;
+  }
+  
+  .risk-level-low {
+    @apply text-green-600 bg-green-50 border-green-200;
+  }
+  
+  .risk-level-medium {
+    @apply text-yellow-600 bg-yellow-50 border-yellow-200;
+  }
+  
+  .risk-level-high {
+    @apply text-orange-600 bg-orange-50 border-orange-200;
+  }
+  
+  .risk-level-critical {
+    @apply text-red-600 bg-red-50 border-red-200;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
