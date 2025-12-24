@@ -30,31 +30,48 @@ const SOCDashboard: React.FC = () => {
     title: {
       text: '威胁趋势分析',
       left: 'center',
-      textStyle: { color: '#333', fontSize: 16 }
+      top: 10,
+      textStyle: { 
+        color: '#333', 
+        fontSize: 16,
+        fontWeight: 'normal'
+      }
     },
     tooltip: {
       trigger: 'axis'
     },
     legend: {
       data: ['恶意软件', 'DDoS攻击', '数据泄露', '钓鱼攻击'],
-      textStyle: { color: '#333' }
+      top: 40,
+      textStyle: { 
+        color: '#333',
+        fontSize: 12
+      },
+      itemGap: 20
     },
     grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
+      left: '8%',
+      right: '8%',
+      top: '25%',
+      bottom: '12%',
       containLabel: true
     },
     xAxis: {
       type: 'category',
       data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
       axisLine: { lineStyle: { color: '#d9d9d9' } },
-      axisLabel: { color: '#666' }
+      axisLabel: { 
+        color: '#666',
+        fontSize: 12
+      }
     },
     yAxis: {
       type: 'value',
       axisLine: { lineStyle: { color: '#d9d9d9' } },
-      axisLabel: { color: '#666' },
+      axisLabel: { 
+        color: '#666',
+        fontSize: 12
+      },
       splitLine: { lineStyle: { color: '#f0f0f0' } }
     },
     series: [
@@ -63,28 +80,40 @@ const SOCDashboard: React.FC = () => {
         type: 'line',
         smooth: true,
         data: [12, 23, 45, 32, 65, 45, 78],
-        itemStyle: { color: '#ff4757' }
+        itemStyle: { color: '#ff4757' },
+        lineStyle: { width: 2 },
+        symbol: 'circle',
+        symbolSize: 4
       },
       {
         name: 'DDoS攻击',
         type: 'line',
         smooth: true,
         data: [5, 15, 28, 35, 42, 38, 55],
-        itemStyle: { color: '#ffa502' }
+        itemStyle: { color: '#ffa502' },
+        lineStyle: { width: 2 },
+        symbol: 'circle',
+        symbolSize: 4
       },
       {
         name: '数据泄露',
         type: 'line',
         smooth: true,
         data: [8, 12, 18, 25, 32, 28, 42],
-        itemStyle: { color: '#ff3742' }
+        itemStyle: { color: '#ff3742' },
+        lineStyle: { width: 2 },
+        symbol: 'circle',
+        symbolSize: 4
       },
       {
         name: '钓鱼攻击',
         type: 'line',
         smooth: true,
         data: [3, 8, 15, 22, 28, 35, 45],
-        itemStyle: { color: '#ff6348' }
+        itemStyle: { color: '#ff6348' },
+        lineStyle: { width: 2 },
+        symbol: 'circle',
+        symbolSize: 4
       }
     ]
   })
@@ -94,7 +123,12 @@ const SOCDashboard: React.FC = () => {
     title: {
       text: '威胁等级分布',
       left: 'center',
-      textStyle: { color: '#333', fontSize: 16 }
+      top: 10,
+      textStyle: { 
+        color: '#333', 
+        fontSize: 16,
+        fontWeight: 'normal'
+      }
     },
     tooltip: {
       trigger: 'item',
@@ -103,8 +137,8 @@ const SOCDashboard: React.FC = () => {
     series: [{
       name: '威胁等级',
       type: 'pie',
-      radius: ['40%', '70%'],
-      center: ['50%', '60%'],
+      radius: ['35%', '65%'],
+      center: ['50%', '58%'],
       data: [
         {value: 45, name: '低风险', itemStyle: {color: '#52c41a'}},
         {value: 32, name: '中风险', itemStyle: {color: '#fa8c16'}},
@@ -119,7 +153,20 @@ const SOCDashboard: React.FC = () => {
         }
       },
       label: {
-        color: '#333'
+        show: true,
+        position: 'outside',
+        formatter: '{b}\n{c}项\n({d}%)',
+        color: '#333',
+        fontSize: 12,
+        lineHeight: 16
+      },
+      labelLine: {
+        show: true,
+        length: 15,
+        length2: 10,
+        lineStyle: {
+          color: '#ccc'
+        }
       }
     }]
   })
@@ -129,7 +176,12 @@ const SOCDashboard: React.FC = () => {
     title: {
       text: '威胁态势热力图',
       left: 'center',
-      textStyle: { color: '#333', fontSize: 16 }
+      top: 10,
+      textStyle: { 
+        color: '#333', 
+        fontSize: 16,
+        fontWeight: 'normal'
+      }
     },
     tooltip: {
       trigger: 'item',
@@ -310,7 +362,7 @@ const SOCDashboard: React.FC = () => {
           <Card title="威胁趋势分析" className="security-card">
             <ReactECharts 
               option={getThreatTrendOption()} 
-              style={{ height: '350px' }}
+              style={{ height: '380px' }}
             />
           </Card>
         </Col>
@@ -318,7 +370,7 @@ const SOCDashboard: React.FC = () => {
           <Card title="威胁等级分布" className="security-card">
             <ReactECharts 
               option={getThreatDistributionOption()} 
-              style={{ height: '350px' }}
+              style={{ height: '380px' }}
             />
           </Card>
         </Col>

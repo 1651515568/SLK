@@ -27,7 +27,12 @@ const AIAnalysisReport: React.FC = () => {
     title: {
       text: 'AI威胁预测趋势',
       left: 'center',
-      textStyle: { color: '#333', fontSize: 16 }
+      top: 10,
+      textStyle: { 
+        color: '#333', 
+        fontSize: 16,
+        fontWeight: 'normal'
+      }
     },
     tooltip: {
       trigger: 'axis',
@@ -40,24 +45,36 @@ const AIAnalysisReport: React.FC = () => {
     },
     legend: {
       data: ['实际威胁', 'AI预测', '置信区间'],
-      textStyle: { color: '#333' }
+      top: 40,
+      textStyle: { 
+        color: '#333',
+        fontSize: 12
+      },
+      itemGap: 20
     },
     grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
+      left: '8%',
+      right: '8%',
+      top: '25%',
+      bottom: '12%',
       containLabel: true
     },
     xAxis: {
       type: 'category',
       data: ['12-20', '12-21', '12-22', '12-23', '12-24', '12-25', '12-26'],
       axisLine: { lineStyle: { color: '#d9d9d9' } },
-      axisLabel: { color: '#666' }
+      axisLabel: { 
+        color: '#666',
+        fontSize: 12
+      }
     },
     yAxis: {
       type: 'value',
       axisLine: { lineStyle: { color: '#d9d9d9' } },
-      axisLabel: { color: '#666' },
+      axisLabel: { 
+        color: '#666',
+        fontSize: 12
+      },
       splitLine: { lineStyle: { color: '#f0f0f0' } }
     },
     series: [
@@ -66,14 +83,20 @@ const AIAnalysisReport: React.FC = () => {
         type: 'line',
         data: [65, 78, 85, 92, 88, 95, 102],
         itemStyle: { color: '#ff4757' },
-        smooth: true
+        smooth: true,
+        lineStyle: { width: 2 },
+        symbol: 'circle',
+        symbolSize: 4
       },
       {
         name: 'AI预测',
         type: 'line',
         data: [68, 75, 88, 89, 91, 93, 98],
         itemStyle: { color: '#52c41a' },
-        smooth: true
+        smooth: true,
+        lineStyle: { width: 2 },
+        symbol: 'circle',
+        symbolSize: 4
       },
       {
         name: '置信区间',
@@ -83,7 +106,9 @@ const AIAnalysisReport: React.FC = () => {
         areaStyle: {
           color: 'rgba(82, 196, 26, 0.1)'
         },
-        smooth: true
+        smooth: true,
+        lineStyle: { width: 1, type: 'dashed' },
+        symbol: 'none'
       }
     ]
   })
@@ -93,7 +118,12 @@ const AIAnalysisReport: React.FC = () => {
     title: {
       text: 'AI模型性能指标',
       left: 'center',
-      textStyle: { color: '#333', fontSize: 16 }
+      top: 10,
+      textStyle: { 
+        color: '#333', 
+        fontSize: 16,
+        fontWeight: 'normal'
+      }
     },
     radar: {
       indicator: [
@@ -102,10 +132,16 @@ const AIAnalysisReport: React.FC = () => {
         { name: 'F1分数', max: 100 },
         { name: '准确率', max: 100 }
       ],
+      center: ['50%', '60%'],
+      radius: '65%',
       splitArea: {
         areaStyle: {
           color: ['rgba(24, 144, 255, 0.1)', 'rgba(24, 144, 255, 0.05)', 'rgba(24, 144, 255, 0.01)']
         }
+      },
+      axisName: {
+        color: '#333',
+        fontSize: 12
       }
     },
     series: [{
@@ -132,14 +168,27 @@ const AIAnalysisReport: React.FC = () => {
     title: {
       text: '异常行为检测热力图',
       left: 'center',
-      textStyle: { color: '#333', fontSize: 16 }
+      top: 10,
+      textStyle: { 
+        color: '#333', 
+        fontSize: 16,
+        fontWeight: 'normal'
+      }
     },
     tooltip: {
-      position: 'top'
+      position: 'top',
+      formatter: function(params: any) {
+        const days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        const times = ['00-04', '04-08', '08-12', '12-16', '16-20', '20-24']
+        return `${days[params.data[0]]} ${times[params.data[1]]}<br/>异常指数: ${params.data[2]}`
+      }
     },
     grid: {
       height: '50%',
-      top: '10%'
+      top: '20%',
+      left: '12%',
+      right: '8%',
+      bottom: '15%'
     },
     xAxis: {
       type: 'category',
@@ -147,7 +196,10 @@ const AIAnalysisReport: React.FC = () => {
       splitArea: {
         show: true
       },
-      axisLabel: { color: '#333' }
+      axisLabel: { 
+        color: '#333',
+        fontSize: 12
+      }
     },
     yAxis: {
       type: 'category',
@@ -155,7 +207,10 @@ const AIAnalysisReport: React.FC = () => {
       splitArea: {
         show: true
       },
-      axisLabel: { color: '#333' }
+      axisLabel: { 
+        color: '#333',
+        fontSize: 12
+      }
     },
     visualMap: {
       min: 0,
@@ -163,11 +218,14 @@ const AIAnalysisReport: React.FC = () => {
       calculable: true,
       orient: 'horizontal',
       left: 'center',
-      bottom: '15%',
+      bottom: '5%',
       inRange: {
         color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
       },
-      textStyle: { color: '#333' }
+      textStyle: { 
+        color: '#333',
+        fontSize: 12
+      }
     },
     series: [{
       name: '异常指数',
@@ -181,7 +239,8 @@ const AIAnalysisReport: React.FC = () => {
         [0, 5, 8], [1, 5, 18], [2, 5, 32], [3, 5, 45], [4, 5, 38], [5, 5, 25], [6, 5, 15]
       ],
       label: {
-        show: true
+        show: true,
+        fontSize: 10
       },
       emphasis: {
         itemStyle: {
@@ -358,7 +417,7 @@ const AIAnalysisReport: React.FC = () => {
           <Card title="AI威胁预测趋势" className="security-card">
             <ReactECharts 
               option={getPredictionTrendOption()} 
-              style={{ height: '350px' }}
+              style={{ height: '380px' }}
             />
           </Card>
         </Col>
@@ -366,7 +425,7 @@ const AIAnalysisReport: React.FC = () => {
           <Card title="异常行为检测热力图" className="security-card">
             <ReactECharts 
               option={getAnomalyHeatmapOption()} 
-              style={{ height: '350px' }}
+              style={{ height: '380px' }}
             />
           </Card>
         </Col>
@@ -378,7 +437,7 @@ const AIAnalysisReport: React.FC = () => {
           <Card title="AI模型性能指标" className="security-card">
             <ReactECharts 
               option={getModelPerformanceRadarOption()} 
-              style={{ height: '350px' }}
+              style={{ height: '380px' }}
             />
           </Card>
         </Col>

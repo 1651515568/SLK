@@ -240,7 +240,7 @@ export const generateId = (prefix: string = '') => {
 
 // 防抖函数
 export const debounce = (func: Function, wait: number) => {
-  let timeout: NodeJS.Timeout
+  let timeout: number
   return function executedFunction(...args: any[]) {
     const later = () => {
       clearTimeout(timeout)

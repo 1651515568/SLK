@@ -1,9 +1,9 @@
+/* 引入安全系统专用样式 */
+@import './styles/security.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* 引入安全系统专用样式 */
-@import './styles/security.css';
 
 @layer base {
   html, body, #root {

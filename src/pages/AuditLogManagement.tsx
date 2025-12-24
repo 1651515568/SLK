@@ -49,7 +49,12 @@ const AuditLogManagement: React.FC = () => {
     title: {
       text: '审计活动趋势',
       left: 'center',
-      textStyle: { color: '#333', fontSize: 16 }
+      top: 10,
+      textStyle: { 
+        color: '#333', 
+        fontSize: 16,
+        fontWeight: 'normal'
+      }
     },
     tooltip: {
       trigger: 'axis',
@@ -62,24 +67,36 @@ const AuditLogManagement: React.FC = () => {
     },
     legend: {
       data: ['安全事件', '用户操作', '系统事件', '访问控制'],
-      textStyle: { color: '#333' }
+      top: 40,
+      textStyle: { 
+        color: '#333',
+        fontSize: 12
+      },
+      itemGap: 20
     },
     grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
+      left: '8%',
+      right: '8%',
+      top: '25%',
+      bottom: '12%',
       containLabel: true
     },
     xAxis: {
       type: 'category',
       data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
       axisLine: { lineStyle: { color: '#d9d9d9' } },
-      axisLabel: { color: '#666' }
+      axisLabel: { 
+        color: '#666',
+        fontSize: 12
+      }
     },
     yAxis: {
       type: 'value',
       axisLine: { lineStyle: { color: '#d9d9d9' } },
-      axisLabel: { color: '#666' },
+      axisLabel: { 
+        color: '#666',
+        fontSize: 12
+      },
       splitLine: { lineStyle: { color: '#f0f0f0' } }
     },
     series: [
@@ -89,6 +106,9 @@ const AuditLogManagement: React.FC = () => {
         data: [45, 23, 78, 123, 89, 156, 201],
         itemStyle: { color: '#f5222d' },
         smooth: true,
+        lineStyle: { width: 2 },
+        symbol: 'circle',
+        symbolSize: 4,
         areaStyle: {
           color: 'rgba(245, 34, 45, 0.1)'
         }
@@ -99,6 +119,9 @@ const AuditLogManagement: React.FC = () => {
         data: [123, 234, 345, 456, 378, 489, 567],
         itemStyle: { color: '#1890ff' },
         smooth: true,
+        lineStyle: { width: 2 },
+        symbol: 'circle',
+        symbolSize: 4,
         areaStyle: {
           color: 'rgba(24, 144, 255, 0.1)'
         }
@@ -109,6 +132,9 @@ const AuditLogManagement: React.FC = () => {
         data: [89, 167, 234, 298, 267, 334, 445],
         itemStyle: { color: '#52c41a' },
         smooth: true,
+        lineStyle: { width: 2 },
+        symbol: 'circle',
+        symbolSize: 4,
         areaStyle: {
           color: 'rgba(82, 196, 26, 0.1)'
         }
@@ -119,6 +145,9 @@ const AuditLogManagement: React.FC = () => {
         data: [67, 123, 189, 245, 201, 278, 356],
         itemStyle: { color: '#fa8c16' },
         smooth: true,
+        lineStyle: { width: 2 },
+        symbol: 'circle',
+        symbolSize: 4,
         areaStyle: {
           color: 'rgba(250, 140, 22, 0.1)'
         }
@@ -131,7 +160,12 @@ const AuditLogManagement: React.FC = () => {
     title: {
       text: '审计级别分布',
       left: 'center',
-      textStyle: { color: '#333', fontSize: 16 }
+      top: 10,
+      textStyle: { 
+        color: '#333', 
+        fontSize: 16,
+        fontWeight: 'normal'
+      }
     },
     tooltip: {
       trigger: 'item',
@@ -140,8 +174,8 @@ const AuditLogManagement: React.FC = () => {
     series: [{
       name: '审计级别',
       type: 'pie',
-      radius: ['40%', '70%'],
-      center: ['50%', '60%'],
+      radius: ['35%', '65%'],
+      center: ['50%', '58%'],
       data: [
         {value: 156, name: '严重', itemStyle: {color: '#f5222d'}},
         {value: 289, name: '警告', itemStyle: {color: '#fa8c16'}},
@@ -156,7 +190,20 @@ const AuditLogManagement: React.FC = () => {
         }
       },
       label: {
-        color: '#333'
+        show: true,
+        position: 'outside',
+        formatter: '{b}\n{c}项\n({d}%)',
+        color: '#333',
+        fontSize: 12,
+        lineHeight: 16
+      },
+      labelLine: {
+        show: true,
+        length: 15,
+        length2: 10,
+        lineStyle: {
+          color: '#ccc'
+        }
       }
     }]
   })
@@ -464,7 +511,7 @@ const AuditLogManagement: React.FC = () => {
           <Card title="审计活动趋势" className="security-card">
             <ReactECharts 
               option={getAuditTrendOption()} 
-              style={{ height: '350px' }}
+              style={{ height: '380px' }}
             />
           </Card>
         </Col>
@@ -472,7 +519,7 @@ const AuditLogManagement: React.FC = () => {
           <Card title="审计级别分布" className="security-card">
             <ReactECharts 
               option={getAuditLevelOption()} 
-              style={{ height: '350px' }}
+              style={{ height: '380px' }}
             />
           </Card>
         </Col>

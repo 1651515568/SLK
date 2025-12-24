@@ -29,7 +29,12 @@ const ThreatIntelligence: React.FC = () => {
     title: {
       text: '威胁类型分布',
       left: 'center',
-      textStyle: { color: '#333', fontSize: 16 }
+      top: 10,
+      textStyle: { 
+        color: '#333', 
+        fontSize: 16,
+        fontWeight: 'normal'
+      }
     },
     tooltip: {
       trigger: 'item',
@@ -38,8 +43,8 @@ const ThreatIntelligence: React.FC = () => {
     series: [{
       name: '威胁类型',
       type: 'pie',
-      radius: ['40%', '70%'],
-      center: ['50%', '60%'],
+      radius: ['35%', '65%'],
+      center: ['50%', '58%'],
       data: [
         {value: 45, name: 'APT攻击', itemStyle: {color: '#f5222d'}},
         {value: 32, name: '恶意软件', itemStyle: {color: '#fa8c16'}},
@@ -56,7 +61,20 @@ const ThreatIntelligence: React.FC = () => {
         }
       },
       label: {
-        color: '#333'
+        show: true,
+        position: 'outside',
+        formatter: '{b}\n{c}项\n({d}%)',
+        color: '#333',
+        fontSize: 12,
+        lineHeight: 16
+      },
+      labelLine: {
+        show: true,
+        length: 15,
+        length2: 10,
+        lineStyle: {
+          color: '#ccc'
+        }
       }
     }]
   })
@@ -66,31 +84,48 @@ const ThreatIntelligence: React.FC = () => {
     title: {
       text: '威胁情报趋势',
       left: 'center',
-      textStyle: { color: '#333', fontSize: 16 }
+      top: 10,
+      textStyle: { 
+        color: '#333', 
+        fontSize: 16,
+        fontWeight: 'normal'
+      }
     },
     tooltip: {
       trigger: 'axis'
     },
     legend: {
       data: ['新发现威胁', '活跃威胁', '已清除威胁'],
-      textStyle: { color: '#333' }
+      top: 40,
+      textStyle: { 
+        color: '#333',
+        fontSize: 12
+      },
+      itemGap: 20
     },
     grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
+      left: '8%',
+      right: '8%',
+      top: '25%',
+      bottom: '12%',
       containLabel: true
     },
     xAxis: {
       type: 'category',
       data: ['12-18', '12-19', '12-20', '12-21', '12-22', '12-23', '12-24'],
       axisLine: { lineStyle: { color: '#d9d9d9' } },
-      axisLabel: { color: '#666' }
+      axisLabel: { 
+        color: '#666',
+        fontSize: 12
+      }
     },
     yAxis: {
       type: 'value',
       axisLine: { lineStyle: { color: '#d9d9d9' } },
-      axisLabel: { color: '#666' },
+      axisLabel: { 
+        color: '#666',
+        fontSize: 12
+      },
       splitLine: { lineStyle: { color: '#f0f0f0' } }
     },
     series: [
@@ -99,21 +134,30 @@ const ThreatIntelligence: React.FC = () => {
         type: 'line',
         data: [12, 18, 25, 32, 28, 35, 42],
         itemStyle: { color: '#ff4757' },
-        smooth: true
+        smooth: true,
+        lineStyle: { width: 2 },
+        symbol: 'circle',
+        symbolSize: 4
       },
       {
         name: '活跃威胁',
         type: 'line',
         data: [85, 78, 82, 88, 92, 89, 95],
         itemStyle: { color: '#ffa502' },
-        smooth: true
+        smooth: true,
+        lineStyle: { width: 2 },
+        symbol: 'circle',
+        symbolSize: 4
       },
       {
         name: '已清除威胁',
         type: 'line',
         data: [65, 72, 78, 85, 88, 92, 98],
         itemStyle: { color: '#52c41a' },
-        smooth: true
+        smooth: true,
+        lineStyle: { width: 2 },
+        symbol: 'circle',
+        symbolSize: 4
       }
     ]
   })
@@ -377,7 +421,7 @@ const ThreatIntelligence: React.FC = () => {
           <Card title="威胁情报趋势" className="security-card">
             <ReactECharts 
               option={getThreatTrendOption()} 
-              style={{ height: '350px' }}
+              style={{ height: '380px' }}
             />
           </Card>
         </Col>
@@ -385,7 +429,7 @@ const ThreatIntelligence: React.FC = () => {
           <Card title="威胁类型分布" className="security-card">
             <ReactECharts 
               option={getThreatTypeDistributionOption()} 
-              style={{ height: '350px' }}
+              style={{ height: '380px' }}
             />
           </Card>
         </Col>
