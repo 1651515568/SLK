@@ -35,8 +35,8 @@ const AccessControl: React.FC = () => {
       case 'medium': return 'orange'
       case 'high': return 'red'
       case 'critical': return 'magenta'
- 'default'
-         default: return }
+      default: return 'default'
+    }
   }
 
   const getThreatLevelText = (level: string) => {

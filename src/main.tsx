@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 import App from './App.tsx'
 import './index.css'
+import './styles/responsive.css'
 
 dayjs.locale('zh-cn')
 

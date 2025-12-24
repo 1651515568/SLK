@@ -13,6 +13,11 @@ import {
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  ProjectOutlined as BrainOutlined,
+  ProjectOutlined,
+  GlobalOutlined,
+  RadarChartOutlined,
+  AuditOutlined,
 } from '@ant-design/icons'
 import { useLocation, useNavigate } from 'react-router-dom'
 import type { MenuProps } from 'antd'
@@ -53,6 +58,34 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       key: '/vulnerability-management',
       icon: <BugOutlined />,
       label: '漏洞扫描管理',
+    },
+    {
+      type: 'divider',
+    },
+    {
+      key: '/soc-dashboard',
+      icon: <RadarChartOutlined />,
+      label: '安全运营中心',
+    },
+    {
+      key: '/ai-analysis',
+      icon: <BrainOutlined />,
+      label: 'AI智能分析',
+    },
+    {
+      key: '/threat-intelligence',
+      icon: <GlobalOutlined />,
+      label: '威胁情报中心',
+    },
+    {
+      key: '/audit-log',
+      icon: <AuditOutlined />,
+      label: '审计日志管理',
+    },
+    {
+      key: '/demo-controller',
+      icon: <ProjectOutlined />,
+      label: '演示控制',
     },
   ]
 

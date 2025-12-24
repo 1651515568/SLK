@@ -1,0 +1,400 @@
+/* 移动端响应式优化样式 */
+
+/* 通用响应式容器 */
+.responsive-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .responsive-container {
+    padding: 0 12px;
+  }
+
+  /* 隐藏侧边栏在移动端 */
+  .ant-layout-sider {
+    position: fixed !important;
+    height: 100vh;
+    left: -256px;
+    z-index: 999;
+    transition: left 0.3s ease;
+  }
+
+  .ant-layout-sider.ant-layout-sider-collapsed {
+    left: -80px;
+  }
+
+  .ant-layout-sider.mobile-visible {
+    left: 0;
+  }
+
+  /* 移动端内容区域 */
+  .ant-layout-content {
+    margin-left: 0 !important;
+    padding: 12px !important;
+  }
+
+  /* 卡片移动端优化 */
+  .ant-card {
+    margin-bottom: 16px;
+  }
+
+  .ant-card-head {
+    padding: 12px 16px;
+    min-height: 48px;
+  }
+
+  .ant-card-body {
+    padding: 16px;
+  }
+
+  /* 统计卡片移动端优化 */
+  .security-stat-card {
+    margin-bottom: 12px;
+  }
+
+  .security-stat-card .ant-card-body {
+    padding: 16px 12px;
+  }
+
+  /* 表格移动端优化 */
+  .ant-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .ant-table {
+    min-width: 600px;
+  }
+
+  /* 图表移动端优化 */
+  .ant-card .echarts-for-react {
+    height: 250px !important;
+  }
+
+  /* 按钮移动端优化 */
+  .ant-btn {
+    height: 36px;
+    padding: 4px 12px;
+    font-size: 14px;
+  }
+
+  /* 输入框移动端优化 */
+  .ant-input,
+  .ant-select-selector {
+    height: 36px;
+    padding: 4px 12px;
+  }
+
+  /* 标签移动端优化 */
+  .ant-tag {
+    font-size: 12px;
+    padding: 2px 8px;
+  }
+
+  /* 模态框移动端优化 */
+  .ant-modal {
+    max-width: 95vw;
+    margin: 0 auto;
+    top: 20px;
+  }
+
+  .ant-modal-body {
+    padding: 16px;
+  }
+
+  /* 步骤条移动端优化 */
+  .ant-steps-item-title {
+    font-size: 12px;
+  }
+
+  /* 时间轴移动端优化 */
+  .ant-timeline-item-content {
+    margin-left: 24px;
+  }
+
+  /* 折叠面板移动端优化 */
+  .ant-collapse-header {
+    padding: 12px 16px;
+  }
+
+  /* 进度条移动端优化 */
+  .ant-progress-text {
+    font-size: 12px;
+  }
+}
+
+/* 平板端优化 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .responsive-container {
+    padding: 0 20px;
+  }
+
+  .ant-layout-content {
+    padding: 16px;
+  }
+
+  .ant-card .echarts-for-react {
+    height: 300px !important;
+  }
+}
+
+/* 大屏幕优化 */
+@media (min-width: 1200px) {
+  .responsive-container {
+    max-width: 1200px;
+    padding: 0 24px;
+  }
+
+  .ant-card .echarts-for-react {
+    height: 400px !important;
+  }
+}
+
+/* 触控友好优化 */
+@media (hover: none) and (pointer: coarse) {
+  /* 增大点击区域 */
+  .ant-btn,
+  .ant-input,
+  .ant-select-selector,
+  .ant-table-cell {
+    min-height: 44px;
+  }
+
+  /* 优化悬停效果 */
+  .ant-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* 禁用悬停效果 */
+  .ant-table-tbody > tr:hover > td {
+    background: transparent;
+  }
+}
+
+/* 深色主题优化 */
+@media (prefers-color-scheme: dark) {
+  .bg-gray-800\/50 {
+    background-color: rgba(31, 41, 55, 0.8);
+  }
+
+  .bg-gray-700 {
+    background-color: rgb(55, 65, 81);
+  }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+  .ant-card {
+    border: 2px solid;
+  }
+
+  .ant-tag {
+    border-width: 2px;
+  }
+
+  .ant-btn {
+    border-width: 2px;
+  }
+}
+
+/* 减少动画偏好支持 */
+@media (prefers-reduced-motion: reduce) {
+  .ant-card,
+  .ant-btn,
+  .ant-table {
+    transition: none;
+  }
+
+  .ant-layout-sider {
+    transition: none;
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .ant-layout-sider,
+  .ant-layout-header {
+    display: none;
+  }
+
+  .ant-layout-content {
+    margin-left: 0;
+    padding: 0;
+  }
+
+  .ant-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+
+  .bg-gray-800\/50,
+  .bg-gray-700 {
+    background: white !important;
+    color: black !important;
+  }
+
+  .text-white {
+    color: black !important;
+  }
+}
+
+/* 滚动条优化 */
+@media (max-width: 768px) {
+  /* 隐藏滚动条 */
+  .ant-table-wrapper::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .ant-table-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .ant-table-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+  }
+
+  /* 优化表格滚动 */
+  .ant-table-body {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}
+
+/* 加载状态优化 */
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* 移动端专用组件 */
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: block;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+}
+
+/* 触摸手势优化 */
+.touch-optimized {
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 安全状态指示器 */
+.security-status-indicator {
+  position: relative;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.security-status-indicator.low {
+  background-color: #52c41a;
+  box-shadow: 0 0 4px rgba(82, 196, 26, 0.5);
+}
+
+.security-status-indicator.medium {
+  background-color: #fa8c16;
+  box-shadow: 0 0 4px rgba(250, 140, 22, 0.5);
+}
+
+.security-status-indicator.high {
+  background-color: #f5222d;
+  box-shadow: 0 0 4px rgba(245, 34, 45, 0.5);
+}
+
+.security-status-indicator.critical {
+  background-color: #722ed1;
+  box-shadow: 0 0 4px rgba(114, 46, 209, 0.5);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 4px rgba(114, 46, 209, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 8px rgba(114, 46, 209, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 4px rgba(114, 46, 209, 0.5);
+  }
+}
+
+/* 威胁等级颜色 */
+.threat-level-low {
+  color: #52c41a;
+}
+
+.threat-level-medium {
+  color: #fa8c16;
+}
+
+.threat-level-high {
+  color: #f5222d;
+}
+
+.threat-level-critical {
+  color: #722ed1;
+  font-weight: bold;
+}
+
+/* 实时更新指示器 */
+.real-time-indicator {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  background: rgba(24, 144, 255, 0.9);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.real-time-indicator::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: #52c41a;
+  border-radius: 50%;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0.3;
+  }
+}

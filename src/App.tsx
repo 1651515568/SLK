@@ -7,6 +7,11 @@ import SecurityOverview from '@/pages/SecurityOverview'
 import DataFusion from '@/pages/DataFusion'
 import AccessControl from '@/pages/AccessControl'
 import VulnerabilityManagement from '@/pages/VulnerabilityManagement'
+import SOCDashboard from '@/pages/SOCDashboard'
+import AIAnalysisReport from '@/pages/AIAnalysisReport'
+import ThreatIntelligence from '@/pages/ThreatIntelligence'
+import AuditLogManagement from '@/pages/AuditLogManagement'
+import DemoController from '@/pages/DemoController'
 import './App.css'
 
 const { Content } = Layout
@@ -24,6 +29,11 @@ function App() {
               <Route path="/data-fusion" element={<DataFusion />} />
               <Route path="/access-control" element={<AccessControl />} />
               <Route path="/vulnerability-management" element={<VulnerabilityManagement />} />
+              <Route path="/soc-dashboard" element={<SOCDashboard />} />
+              <Route path="/ai-analysis" element={<AIAnalysisReport />} />
+              <Route path="/threat-intelligence" element={<ThreatIntelligence />} />
+              <Route path="/audit-log" element={<AuditLogManagement />} />
+              <Route path="/demo-controller" element={<DemoController />} />
               <Route path="/device-identification/:deviceId" element={<DeviceIdentification />} />
             </Routes>
           </Content>

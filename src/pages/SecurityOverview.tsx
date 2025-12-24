@@ -13,14 +13,34 @@ import { generateMockSecurityData } from '@/utils/mockData'
 const SecurityOverview: React.FC = () => {
   const [securityData, setSecurityData] = useState<SecurityOverviewType | null>(null)
   const [networkNodes, setNetworkNodes] = useState<NetworkNode[]>([])
-  const [recentEvents, setRecentEvents] = useState<SecurityEvent[]>([])
+  const [realTimeEvents, setRealTimeEvents] = useState<SecurityEvent[]>([])
+  const [lastUpdateTime, setLastUpdateTime] = useState(new Date())
 
   useEffect(() => {
     // 模拟数据加载
     const mockData = generateMockSecurityData()
     setSecurityData(mockData.overview)
     setNetworkNodes(mockData.networkNodes)
-    setRecentEvents(mockData.recentEvents)
+    setRealTimeEvents(mockData.recentEvents.slice(0, 5)) // 初始化实时事件
+
+    // 添加实时事件流
+    const eventTimer = setInterval(() => {
+      const severities: ('low' | 'medium' | 'high' | 'critical')[] = ['low', 'medium', 'high', 'critical']
+      const newEvent: SecurityEvent = {
+        id: `event-${Date.now()}`,
+        timestamp: new Date().toLocaleString('zh-CN'),
+        type: ['异常登录', '漏洞扫描', '设备接入', '威胁检测', '数据泄露'][Math.floor(Math.random() * 5)],
+        severity: severities[Math.floor(Math.random() * severities.length)],
+        description: '实时监控检测到安全事件',
+        source: `192.168.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`,
+        status: 'active'
+      }
+      
+      setRealTimeEvents(prev => [newEvent, ...prev.slice(0, 4)]) // 保留最新5条
+      setLastUpdateTime(new Date())
+    }, 8000) // 每8秒产生一个新事件
+    
+    return () => clearInterval(eventTimer)
   }, [])
 
   const getRiskLevelColor = (level: string) => {
@@ -199,11 +219,16 @@ const SecurityOverview: React.FC = () => {
       <Card title="实时安全事件" className="security-card">
         <Table
           columns={eventColumns}
-          dataSource={recentEvents}
+          dataSource={realTimeEvents}
           rowKey="id"
-          pagination={{ pageSize: 10 }}
+          pagination={{ pageSize: 8 }}
           size="small"
         />
+        
+        {/* 最后更新时间 */}
+        <div className="text-center text-xs text-gray-500 mt-2">
+          最后更新: {lastUpdateTime.toLocaleTimeString('zh-CN')}
+        </div>
       </Card>
 
       {/* 威胁情报时间线 */}

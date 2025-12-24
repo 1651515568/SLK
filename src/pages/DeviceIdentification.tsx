@@ -14,6 +14,9 @@ const DeviceIdentification: React.FC = () => {
   const [searchText, setSearchText] = useState('')
   const [deviceTypeFilter, setDeviceTypeFilter] = useState<string>('all')
   const [riskLevelFilter, setRiskLevelFilter] = useState<string>('all')
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
+  const [batchActionModalVisible, setBatchActionModalVisible] = useState(false)
+  const [currentBatchAction, setCurrentBatchAction] = useState<string>('')
 
   useEffect(() => {
     loadDevices()
@@ -98,6 +101,33 @@ const DeviceIdentification: React.FC = () => {
   const handleViewDetail = (device: DeviceInfo) => {
     setSelectedDevice(device)
     setDetailModalVisible(true)
+  }
+
+  // 批量操作功能
+  const handleBatchAction = (action: string) => {
+    if (selectedRowKeys.length === 0) {
+      return
+    }
+    setCurrentBatchAction(action)
+    setBatchActionModalVisible(true)
+  }
+
+  const confirmBatchAction = () => {
+    console.log(`执行批量${currentBatchAction}:`, selectedRowKeys)
+    // 模拟批量操作
+    setBatchActionModalVisible(false)
+    setSelectedRowKeys([])
+  }
+
+  // 表格行选择配置
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (newSelectedRowKeys: React.Key[]) => {
+      setSelectedRowKeys(newSelectedRowKeys)
+    },
+    getCheckboxProps: (record: DeviceInfo) => ({
+      disabled: record.securityStatus === 'malicious' // 恶意设备不可选择
+    })
   }
 
   // 设备统计图表配置
@@ -306,6 +336,25 @@ const DeviceIdentification: React.FC = () => {
         className="security-card"
         extra={
           <Space>
+            {selectedRowKeys.length > 0 && (
+              <Space>
+                <span className="text-gray-600">已选择 {selectedRowKeys.length} 项</span>
+                <Button
+                  type="primary"
+                  size="small"
+                  onClick={() => handleBatchAction('监控')}
+                >
+                  批量监控
+                </Button>
+                <Button
+                  type="default"
+                  size="small"
+                  onClick={() => handleBatchAction('标记')}
+                >
+                  批量标记
+                </Button>
+              </Space>
+            )}
             <Button
               icon={<ReloadOutlined />}
               onClick={loadDevices}
@@ -361,6 +410,7 @@ const DeviceIdentification: React.FC = () => {
           dataSource={filteredDevices}
           rowKey="id"
           loading={loading}
+          rowSelection={rowSelection}
           pagination={{
             total: filteredDevices.length,
             pageSize: 10,
@@ -424,6 +474,16 @@ const DeviceIdentification: React.FC = () => {
             </Descriptions.Item>
           </Descriptions>
         )}
+      </Modal>
+
+      {/* 批量操作确认弹窗 */}
+      <Modal
+        title="批量操作确认"
+        open={batchActionModalVisible}
+        onOk={confirmBatchAction}
+        onCancel={() => setBatchActionModalVisible(false)}
+      >
+        <p>确定要对选中的 {selectedRowKeys.length} 个设备执行“{currentBatchAction}”操作吗？</p>
       </Modal>
     </div>
   )
