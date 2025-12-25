@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { Card, Table, Tag, Button, Space, Input, Select, Row, Col, Modal, Descriptions, Statistic } from 'antd'
+import { Card, Tag, Button, Space, Input, Select, Row, Col, Modal, Descriptions, Statistic } from 'antd'
 import { SearchOutlined, EyeOutlined, ReloadOutlined } from '@ant-design/icons'
-import ReactECharts from 'echarts-for-react'
+// import ReactECharts from 'echarts-for-react'
 import { DeviceInfo } from '@/types'
 import { generateMockDevices } from '@/utils/mockData'
 import VirtualScrollTable from '@/components/common/VirtualScrollTable'
-import LoadingState, { TableSkeleton, ChartSkeleton, StatCardSkeleton } from '@/components/common/LoadingState'
+import LoadingState from '@/components/common/LoadingState'
 import OptimizedChart from '@/components/common/OptimizedChart'
 
 const DeviceIdentification: React.FC = () => {
@@ -20,7 +20,8 @@ const DeviceIdentification: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const [batchActionModalVisible, setBatchActionModalVisible] = useState(false)
   const [currentBatchAction, setCurrentBatchAction] = useState<string>('')
-  const [loadingStates, setLoadingStates] = useState({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_loadingStates, _setLoadingStates] = useState({
     stats: false,
     charts: false,
     table: false
@@ -128,15 +129,8 @@ const DeviceIdentification: React.FC = () => {
   }
 
   // 表格行选择配置
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (newSelectedRowKeys: React.Key[]) => {
-      setSelectedRowKeys(newSelectedRowKeys)
-    },
-    getCheckboxProps: (record: DeviceInfo) => ({
-      disabled: record.securityStatus === 'malicious' // 恶意设备不可选择
-    })
-  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 
   // 设备统计图表配置
   const getDeviceTypeChartOption = useMemo(() => ({

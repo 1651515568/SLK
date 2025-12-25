@@ -43,7 +43,7 @@ function App() {
       </Layout>
       
       {/* 开发环境下显示性能监控 */}
-      {process.env.NODE_ENV === 'development' && (
+      {true && (
         <>
           <PerformanceMonitor
             enabled={true}

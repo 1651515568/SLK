@@ -573,7 +573,7 @@ const ThreatIntelligence: React.FC = () => {
               <Descriptions.Item label="相关标签" span={2}>
                 <div className="space-x-2">
                   {selectedThreat.tags.map((tag: string, index: number) => (
-                    <Tag key={index} size="small" color="orange">{tag}</Tag>
+                    <Tag key={index} color="orange">{tag}</Tag>
                   ))}
                 </div>
               </Descriptions.Item>

@@ -14,7 +14,7 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   ProjectOutlined as BrainOutlined,
-  ProjectOutlined,
+  // ProjectOutlined,
   GlobalOutlined,
   RadarChartOutlined,
   AuditOutlined,

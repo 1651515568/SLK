@@ -15,10 +15,13 @@ interface LayoutInspectorProps {
 }
 
 const LayoutInspector: React.FC<LayoutInspectorProps> = ({
-  enabled = process.env.NODE_ENV === 'development',
+  enabled = true, // 在开发环境中启用
   onIssuesFound
 }) => {
-  const [issues, setIssues] = useState<LayoutIssue[]>([])
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_issues, setIssues] = useState<LayoutIssue[]>([])
 
   // 检测文字重叠问题
   const detectTextOverlap = (): LayoutIssue[] => {

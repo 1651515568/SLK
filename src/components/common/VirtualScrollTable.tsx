@@ -29,7 +29,7 @@ const VirtualScrollTable = <T extends Record<string, any>>({
   const containerRef = useRef<HTMLDivElement>(null)
 
   // 计算可见区域
-  const { visibleData, startIndex, endIndex } = useMemo(() => {
+  const { visibleData, startIndex } = useMemo(() => {
     if (!virtualScroll || dataSource.length < threshold) {
       return {
         visibleData: dataSource,
@@ -115,7 +115,7 @@ const VirtualScrollTable = <T extends Record<string, any>>({
                 ? `translateY(${startIndex * rowHeight}px)` 
                 : 'none',
             }}
-            onRow={(record, index) => ({
+            onRow={(_record, _index) => ({
               style: {
                 height: rowHeight,
                 lineHeight: `${rowHeight - 20}px`,

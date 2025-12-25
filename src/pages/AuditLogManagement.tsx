@@ -416,7 +416,7 @@ const AuditLogManagement: React.FC = () => {
       title: '结果',
       dataIndex: 'result',
       key: 'result',
-      width: 80,
+      width: 100,
       render: (result: string) => (
         <Badge status={getResultColor(result) as any} text={getResultText(result)} />
       )

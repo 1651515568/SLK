@@ -6,11 +6,11 @@ import {
   ClockCircleOutlined,
   SafetyCertificateOutlined as ShieldOutlined,
 } from '@ant-design/icons'
-import ReactECharts from 'echarts-for-react'
+// import ReactECharts from 'echarts-for-react'
 import { SecurityOverview as SecurityOverviewType, SecurityEvent, NetworkNode } from '@/types'
 import { generateMockSecurityData } from '@/utils/mockData'
-import LoadingState, { StatCardSkeleton, ChartSkeleton } from '@/components/common/LoadingState'
-import OptimizedChart, { RealtimeChart } from '@/components/common/OptimizedChart'
+// import LoadingState from '@/components/common/LoadingState'
+import OptimizedChart from '@/components/common/OptimizedChart'
 
 const SecurityOverview: React.FC = () => {
   const [securityData, setSecurityData] = useState<SecurityOverviewType | null>(null)

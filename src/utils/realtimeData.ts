@@ -116,7 +116,7 @@ export class ThreatScenarioGenerator {
 // 实时数据更新器
 export class RealTimeDataUpdater {
   private subscribers: Array<(data: any) => void> = []
-  private updateInterval: number | null = null
+  private updateInterval: any = null
 
   subscribe(callback: (data: any) => void) {
     this.subscribers.push(callback)

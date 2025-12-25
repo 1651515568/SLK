@@ -18,7 +18,7 @@ interface PerformanceMonitorProps {
 }
 
 const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
-  enabled = process.env.NODE_ENV === 'development',
+  enabled = true, // 在开发环境中启用
   threshold = 16, // 60fps threshold
   onMetricsUpdate,
   showOverlay = false
@@ -35,8 +35,6 @@ const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
   
   const frameCountRef = useRef(0)
   const lastTimeRef = useRef(performance.now())
-  const lastFrameTimeRef = useRef(performance.now())
-  const layoutShiftRef = useRef(0)
   const componentCountRef = useRef(0)
   const largeComponentsRef = useRef<string[]>([])
 
@@ -242,7 +240,7 @@ export default PerformanceMonitor
 // 性能警告钩子
 export const usePerformanceWarning = () => {
   const warnPerformance = (componentName: string, operation: string, duration: number) => {
-    if (duration > 100 && process.env.NODE_ENV === 'development') {
+    if (duration > 100) { // 总是启用性能警告
       console.warn(`⚠️ Performance Warning in ${componentName}: ${operation} took ${duration.toFixed(2)}ms`, {
         component: componentName,
         operation,

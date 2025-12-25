@@ -325,7 +325,7 @@ const AIAnalysisReport: React.FC = () => {
       title: '状态',
       key: 'status',
       width: 100,
-      render: (record: any) => {
+      render: (_record: any) => {
         const statusConfig = {
           '分析中': { status: 'processing', color: '#1890ff' },
           '已完成': { status: 'success', color: '#52c41a' },

@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useRef, useEffect, forwardRef, useImperativeHandle } from 'react'
+import { useMemo, useCallback, useRef, useEffect, forwardRef, useImperativeHandle } from 'react'
 import ReactECharts from 'echarts-for-react'
 import type { EChartsOption } from 'echarts'
 import { debounce } from '@/utils/common'
@@ -17,23 +17,7 @@ interface OptimizedChartProps {
   onEvents?: Record<string, Function>
 }
 
-// 防抖的图表更新函数
-const createDebouncedUpdate = (delay = 100) => {
-  let timeoutId: NodeJS.Timeout | null = null
-  let lastOption: EChartsOption | null = null
-  
-  return (updateFn: () => void, option: EChartsOption) => {
-    lastOption = option
-    if (timeoutId) {
-      clearTimeout(timeoutId)
-    }
-    
-    timeoutId = setTimeout(() => {
-      updateFn()
-      timeoutId = null
-    }, delay)
-  }
-}
+
 
 const OptimizedChart = forwardRef<ReactECharts, OptimizedChartProps>(({
   option,
@@ -49,10 +33,9 @@ const OptimizedChart = forwardRef<ReactECharts, OptimizedChartProps>(({
   onEvents
 }, ref) => {
   const chartRef = useRef<ReactECharts>(null)
-  const debouncedUpdate = useMemo(
-    () => createDebouncedUpdate(lazyUpdate ? 100 : 0),
-    [lazyUpdate]
-  )
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 
   // 优化的图表配置
   const optimizedOption = useMemo(() => {
