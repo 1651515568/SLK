@@ -175,7 +175,7 @@ const AuditLogManagement: React.FC = () => {
       name: '审计级别',
       type: 'pie',
       radius: ['35%', '65%'],
-      center: ['50%', '58%'],
+      center: ['50%', '55%'],
       data: [
         {value: 156, name: '严重', itemStyle: {color: '#f5222d'}},
         {value: 289, name: '警告', itemStyle: {color: '#fa8c16'}},
@@ -194,13 +194,14 @@ const AuditLogManagement: React.FC = () => {
         position: 'outside',
         formatter: '{b}\n{c}项\n({d}%)',
         color: '#333',
-        fontSize: 12,
-        lineHeight: 16
+        fontSize: 11,
+        lineHeight: 14,
+        distanceToLabelLine: 5
       },
       labelLine: {
         show: true,
-        length: 15,
-        length2: 10,
+        length: 12,
+        length2: 8,
         lineStyle: {
           color: '#ccc'
         }
@@ -424,9 +425,9 @@ const AuditLogManagement: React.FC = () => {
       title: 'IP地址',
       dataIndex: 'ip',
       key: 'ip',
-      width: 130,
+      width: 140,
       render: (ip: string) => (
-        <code className="bg-gray-100 px-2 py-1 rounded text-green-600">{ip}</code>
+        <code className="bg-gray-100 px-2 py-1 rounded text-green-600 text-xs whitespace-nowrap">{ip}</code>
       )
     },
     {

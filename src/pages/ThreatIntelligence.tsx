@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Card, Row, Col, Statistic, Table, Tag, Alert, Badge, Button } from 'antd'
+import { Card, Row, Col, Statistic, Table, Tag, Alert, Badge, Button, Modal, Descriptions } from 'antd'
 import {
   GlobalOutlined,
   DatabaseOutlined,
@@ -7,13 +7,18 @@ import {
   SafetyOutlined,
   CloudServerOutlined,
   ReloadOutlined,
-
+  EyeOutlined,
+  InfoCircleOutlined
 } from '@ant-design/icons'
 import ReactECharts from 'echarts-for-react'
 
 // 威胁情报集成中心组件
 const ThreatIntelligence: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date())
+  
+  // 详情弹窗状态
+  const [threatModalVisible, setThreatModalVisible] = useState(false)
+  const [selectedThreat, setSelectedThreat] = useState<any>(null)
 
 
   useEffect(() => {
@@ -280,10 +285,11 @@ const ThreatIntelligence: React.FC = () => {
       title: '威胁名称',
       dataIndex: 'title',
       key: 'title',
+      width: 200,
       render: (title: string, record: any) => (
         <div>
-          <div className="font-semibold text-gray-800">{title}</div>
-          <div className="text-xs text-gray-500">{record.source}</div>
+          <div className="font-semibold text-gray-800 truncate" title={title}>{title}</div>
+          <div className="text-xs text-gray-500 truncate" title={record.source}>{record.source}</div>
         </div>
       )
     },
@@ -291,16 +297,18 @@ const ThreatIntelligence: React.FC = () => {
       title: '威胁类型',
       dataIndex: 'type',
       key: 'type',
+      width: 100,
       render: (type: string) => (
-        <Tag color="blue">{type}</Tag>
+        <Tag color="blue" className="text-xs">{type}</Tag>
       )
     },
     {
       title: '严重程度',
       dataIndex: 'severity',
       key: 'severity',
+      width: 80,
       render: (severity: string) => (
-        <Tag color={getSeverityColor(severity)}>
+        <Tag color={getSeverityColor(severity)} className="text-xs">
           {getSeverityText(severity)}
         </Tag>
       )
@@ -309,10 +317,14 @@ const ThreatIntelligence: React.FC = () => {
       title: '置信度',
       dataIndex: 'confidence',
       key: 'confidence',
+      width: 80,
       render: (confidence: number) => (
         <Badge 
           count={`${confidence}%`} 
-          style={{ backgroundColor: confidence > 90 ? '#52c41a' : confidence > 80 ? '#fa8c16' : '#f5222d' }}
+          style={{ 
+            backgroundColor: confidence > 90 ? '#52c41a' : confidence > 80 ? '#fa8c16' : '#f5222d',
+            fontSize: '10px'
+          }}
         />
       )
     },
@@ -320,12 +332,28 @@ const ThreatIntelligence: React.FC = () => {
       title: '最后更新',
       dataIndex: 'lastSeen',
       key: 'lastSeen',
+      width: 120,
+      render: (lastSeen: string) => (
+        <span className="text-xs text-gray-600" title={lastSeen}>{lastSeen}</span>
+      )
     },
     {
       title: '操作',
       key: 'action',
-      render: () => (
-        <Button type="link" size="small">查看详情</Button>
+      width: 80,
+      render: (record: any) => (
+        <Button 
+          type="link" 
+          size="small" 
+          icon={<EyeOutlined />}
+          onClick={() => {
+            setSelectedThreat(record)
+            setThreatModalVisible(true)
+          }}
+          className="p-0 h-auto text-blue-600 text-xs"
+        >
+          查看详情
+        </Button>
       )
     }
   ]
@@ -437,45 +465,143 @@ const ThreatIntelligence: React.FC = () => {
 
       {/* 情报源状态 */}
       <Row gutter={[16, 16]} className="mb-6">
-        <Col xs={24} lg={16}>
+        <Col xs={24} lg={10}>
           <Card title="情报源状态" className="security-card">
-            <div className="space-y-4">
+            <div className="space-y-3">
               {intelligenceSources.map((source) => (
-                <div key={source.id} className="bg-gray-50 p-4 rounded-lg">
+                <div key={source.id} className="bg-gray-50 p-3 rounded-lg">
                   <div className="flex justify-between items-start mb-2">
-                    <div className="font-semibold text-gray-800">{source.name}</div>
+                    <div className="font-semibold text-gray-800 text-sm truncate" title={source.name}>{source.name}</div>
                     <Badge 
                       status={source.status === 'connected' ? 'success' : 'error'} 
                       text={source.status === 'connected' ? '在线' : '离线'}
+                      className="text-xs"
                     />
                   </div>
-                  <div className="text-sm text-gray-600 mb-2">
-                    指标数: {source.indicators}
+                  <div className="text-xs text-gray-600 mb-1">
+                    指标: {source.indicators} | 置信: {source.confidence}%
                   </div>
-                  <div className="text-sm text-gray-600 mb-2">
-                    置信度: {source.confidence}%
-                  </div>
-                  <div className="text-xs text-gray-500">
-                    最后更新: {source.lastUpdate}
+                  <div className="text-xs text-gray-500 truncate" title={source.lastUpdate}>
+                    更新: {source.lastUpdate}
                   </div>
                 </div>
               ))}
             </div>
           </Card>
         </Col>
-        <Col xs={24} lg={8}>
+        <Col xs={24} lg={14}>
           <Card title="威胁情报列表" className="security-card">
             <Table
               columns={intelligenceColumns}
               dataSource={threatIntelligenceData}
               rowKey="id"
-              pagination={{ pageSize: 8 }}
+              pagination={{ pageSize: 6 }}
               size="small"
               className="text-gray-800"
+              scroll={{ x: 680 }}
+              onRow={(record) => ({
+                onClick: () => {
+                  console.log('点击威胁情报:', record)
+                }
+              })}
             />
           </Card>
         </Col>
       </Row>
+      
+      {/* 威胁情报详情弹窗 */}
+      <Modal
+        title="威胁情报详情"
+        open={threatModalVisible}
+        onCancel={() => setThreatModalVisible(false)}
+        footer={null}
+        width={900}
+      >
+        {selectedThreat && (
+          <div className="space-y-4">
+            <Alert
+              message={selectedThreat.title}
+              description={selectedThreat.description}
+              type={selectedThreat.severity === 'critical' ? 'error' : selectedThreat.severity === 'high' ? 'warning' : 'info'}
+              showIcon
+              icon={<InfoCircleOutlined />}
+            />
+            
+            <Descriptions bordered column={2} size="small">
+              <Descriptions.Item label="威胁名称" span={2}>
+                <div className="font-semibold text-lg">{selectedThreat.title}</div>
+              </Descriptions.Item>
+              <Descriptions.Item label="情报来源" span={1}>
+                <Tag color="blue">{selectedThreat.source}</Tag>
+              </Descriptions.Item>
+              <Descriptions.Item label="威胁类型" span={1}>
+                <Tag color="purple">{selectedThreat.type}</Tag>
+              </Descriptions.Item>
+              <Descriptions.Item label="严重程度" span={1}>
+                <Tag color={getSeverityColor(selectedThreat.severity)}>
+                  {getSeverityText(selectedThreat.severity)}
+                </Tag>
+              </Descriptions.Item>
+              <Descriptions.Item label="置信度" span={1}>
+                <div className="flex items-center space-x-2">
+                  <Badge 
+                    count={`${selectedThreat.confidence}%`}
+                    style={{ 
+                      backgroundColor: selectedThreat.confidence > 90 ? '#52c41a' : selectedThreat.confidence > 80 ? '#fa8c16' : '#f5222d'
+                    }}
+                  />
+                </div>
+              </Descriptions.Item>
+              <Descriptions.Item label="最后更新" span={1}>
+                {selectedThreat.lastSeen}
+              </Descriptions.Item>
+              <Descriptions.Item label="威胁指标 (IOC)" span={2}>
+                <div className="bg-red-50 p-3 rounded">
+                  <code className="text-sm text-red-800">{selectedThreat.ioc}</code>
+                </div>
+              </Descriptions.Item>
+              <Descriptions.Item label="威胁描述" span={2}>
+                <div className="bg-gray-50 p-3 rounded text-sm">
+                  {selectedThreat.description}
+                </div>
+              </Descriptions.Item>
+              <Descriptions.Item label="缓解措施" span={2}>
+                <div className="bg-green-50 p-3 rounded text-sm text-green-800">
+                  {selectedThreat.mitigation}
+                </div>
+              </Descriptions.Item>
+              <Descriptions.Item label="相关标签" span={2}>
+                <div className="space-x-2">
+                  {selectedThreat.tags.map((tag: string, index: number) => (
+                    <Tag key={index} size="small" color="orange">{tag}</Tag>
+                  ))}
+                </div>
+              </Descriptions.Item>
+              <Descriptions.Item label="情报ID" span={1}>
+                TI-{selectedThreat.id.toString().padStart(4, '0')}
+              </Descriptions.Item>
+              <Descriptions.Item label="更新频率" span={1}>
+                实时更新
+              </Descriptions.Item>
+            </Descriptions>
+            
+            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+              <div className="flex items-center mb-2">
+                <WarningOutlined className="text-yellow-600 mr-2" />
+                <h4 className="font-semibold text-yellow-800">安全建议</h4>
+              </div>
+              <div className="text-sm text-yellow-700">
+                <ul className="list-disc list-inside space-y-1">
+                  <li>立即检查相关IOCs在您的网络环境中是否存在</li>
+                  <li>更新安全设备的威胁情报库</li>
+                  <li>加强相关类型攻击的监控和防护</li>
+                  <li>考虑实施更严格的访问控制策略</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   )
 }

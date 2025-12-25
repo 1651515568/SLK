@@ -82,11 +82,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       icon: <AuditOutlined />,
       label: '审计日志管理',
     },
-    {
-      key: '/demo-controller',
-      icon: <ProjectOutlined />,
-      label: '演示控制',
-    },
+
   ]
 
   const userMenuItems: MenuProps['items'] = [

@@ -185,37 +185,75 @@ const SOCDashboard: React.FC = () => {
     },
     tooltip: {
       trigger: 'item',
-      formatter: '{b}<br/>威胁等级: {c}'
+      formatter: function(params: any) {
+        const threatLevel = params.data[2]
+        const level = threatLevel > 80 ? '严重' : threatLevel > 60 ? '高危' : threatLevel > 40 ? '中危' : '低危'
+        return `${params.data[0]}<br/>威胁等级: ${threatLevel} (${level})`
+      }
+    },
+    grid: {
+      height: '60%',
+      top: '15%',
+      left: '8%',
+      right: '8%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+      splitArea: {
+        show: true
+      },
+      axisLabel: { 
+        color: '#333',
+        fontSize: 12
+      }
+    },
+    yAxis: {
+      type: 'category',
+      data: ['00-04', '04-08', '08-12', '12-16', '16-20', '20-24'],
+      splitArea: {
+        show: true
+      },
+      axisLabel: { 
+        color: '#333',
+        fontSize: 12
+      }
+    },
+    visualMap: {
+      min: 0,
+      max: 100,
+      calculable: true,
+      orient: 'horizontal',
+      left: 'center',
+      bottom: '5%',
+      inRange: {
+        color: ['#52c41a', '#fa8c16', '#f5222d', '#722ed1']
+      },
+      textStyle: { 
+        color: '#333',
+        fontSize: 12
+      }
     },
     series: [{
-      name: '威胁等级',
-      type: 'scatter',
+      name: '威胁指数',
+      type: 'heatmap',
       data: [
-        {name: '北京', value: [116.4074, 39.9042, 85]},
-        {name: '上海', value: [121.4737, 31.2304, 72]},
-        {name: '广州', value: [113.2644, 23.1291, 68]},
-        {name: '深圳', value: [114.0579, 22.5431, 91]},
-        {name: '成都', value: [104.0665, 30.5723, 45]},
-        {name: '武汉', value: [114.3055, 30.5928, 65]},
-        {name: '西安', value: [108.9398, 34.3416, 55]},
-        {name: '杭州', value: [120.1551, 30.2741, 78]},
+        [0, 0, 25], [1, 0, 45], [2, 0, 65], [3, 0, 85], [4, 0, 70], [5, 0, 35], [6, 0, 15],
+        [0, 1, 15], [1, 1, 35], [2, 1, 55], [3, 1, 75], [4, 1, 80], [5, 1, 50], [6, 1, 25],
+        [0, 2, 35], [1, 2, 55], [2, 2, 75], [3, 2, 90], [4, 2, 85], [5, 2, 65], [6, 2, 35],
+        [0, 3, 45], [1, 3, 65], [2, 3, 85], [3, 3, 95], [4, 3, 90], [5, 3, 75], [6, 3, 45],
+        [0, 4, 35], [1, 4, 55], [2, 4, 75], [3, 4, 88], [4, 4, 82], [5, 4, 65], [6, 4, 35],
+        [0, 5, 20], [1, 5, 40], [2, 5, 60], [3, 5, 80], [4, 5, 70], [5, 5, 50], [6, 5, 25]
       ],
-      symbolSize: function (val: number[]) {
-        return val[2] / 3
-      },
-      itemStyle: {
-        color: function(params: any) {
-          const colors = ['#52c41a', '#fa8c16', '#f5222d', '#722ed1']
-          const colorIndex = params.value[2] > 80 ? 3 : params.value[2] > 60 ? 2 : params.value[2] > 40 ? 1 : 0
-          return colors[colorIndex]
-        },
-        shadowBlur: 10,
-        shadowColor: 'rgba(0, 0, 0, 0.5)'
+      label: {
+        show: true,
+        fontSize: 10
       },
       emphasis: {
         itemStyle: {
-          shadowBlur: 20,
-          shadowColor: 'rgba(0, 0, 0, 0.8)'
+          shadowBlur: 10,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
         }
       }
     }]

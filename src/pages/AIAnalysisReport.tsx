@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Card, Row, Col, Statistic, Button, Table, Tag, Progress, Alert, Descriptions, Badge } from 'antd'
+import { Card, Row, Col, Statistic, Button, Table, Tag, Progress, Alert, Descriptions, Badge, Modal } from 'antd'
 import {
   ProjectOutlined as BrainOutlined,
   FileTextOutlined,
@@ -7,12 +7,18 @@ import {
   AlertOutlined,
   CheckCircleOutlined,
   ClockCircleOutlined,
+  EyeOutlined,
+  InfoCircleOutlined
 } from '@ant-design/icons'
 import ReactECharts from 'echarts-for-react'
 
 // AI智能分析报告组件
 const AIAnalysisReport: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date())
+  
+  // 详情弹窗状态
+  const [reportModalVisible, setReportModalVisible] = useState(false)
+  const [selectedReport, setSelectedReport] = useState<any>(null)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -307,10 +313,7 @@ const AIAnalysisReport: React.FC = () => {
       dataIndex: 'confidence',
       key: 'confidence',
       render: (confidence: number) => (
-        <div>
-          <Progress percent={confidence} size="small" />
-          <span className="text-xs text-gray-500">{confidence}%</span>
-        </div>
+        <Progress percent={confidence} size="small" />
       )
     },
     {
@@ -321,15 +324,39 @@ const AIAnalysisReport: React.FC = () => {
     {
       title: '状态',
       key: 'status',
-      render: () => (
-        <Badge status="processing" text="分析中" />
-      )
+      width: 100,
+      render: (record: any) => {
+        const statusConfig = {
+          '分析中': { status: 'processing', color: '#1890ff' },
+          '已完成': { status: 'success', color: '#52c41a' },
+          '失败': { status: 'error', color: '#f5222d' }
+        }
+        const config = statusConfig['分析中']
+        return (
+          <div className="whitespace-nowrap">
+            <Badge status={config.status as any} />
+            <span className="text-xs text-gray-600">分析中</span>
+          </div>
+        )
+      }
     },
     {
       title: '操作',
       key: 'action',
-      render: () => (
-        <Button type="link" size="small">查看详情</Button>
+      width: 100,
+      render: (record: any) => (
+        <Button 
+          type="link" 
+          size="small" 
+          icon={<EyeOutlined />}
+          onClick={() => {
+            setSelectedReport(record)
+            setReportModalVisible(true)
+          }}
+          className="p-0 h-auto text-blue-600"
+        >
+          查看详情
+        </Button>
       )
     }
   ]
@@ -523,6 +550,12 @@ const AIAnalysisReport: React.FC = () => {
               pagination={{ pageSize: 4 }}
               size="small"
               className="text-gray-800"
+              scroll={{ x: 800 }}
+              onRow={(record) => ({
+                onClick: () => {
+                  console.log('点击行:', record)
+                }
+              })}
             />
           </Card>
         </Col>
@@ -565,6 +598,90 @@ const AIAnalysisReport: React.FC = () => {
           </Col>
         </Row>
       </Card>
+      
+      {/* AI分析报告详情弹窗 */}
+      <Modal
+        title="AI分析报告详情"
+        open={reportModalVisible}
+        onCancel={() => setReportModalVisible(false)}
+        footer={null}
+        width={900}
+      >
+        {selectedReport && (
+          <div className="space-y-4">
+            <Alert
+              message={selectedReport.title}
+              description={selectedReport.description}
+              type="info"
+              showIcon
+              icon={<InfoCircleOutlined />}
+            />
+            
+            <Descriptions bordered column={2} size="small">
+              <Descriptions.Item label="报告类型" span={1}>
+                <Tag color="blue">{selectedReport.type}</Tag>
+              </Descriptions.Item>
+              <Descriptions.Item label="AI置信度" span={1}>
+                <div className="flex items-center space-x-2">
+                  <Progress percent={selectedReport.confidence} size="small" className="flex-1" />
+                  <span className="font-bold text-blue-600">{selectedReport.confidence}%</span>
+                </div>
+              </Descriptions.Item>
+              <Descriptions.Item label="分析结果" span={2}>
+                <div className="bg-blue-50 p-3 rounded">
+                  <p className="text-sm text-gray-700">{selectedReport.description}</p>
+                </div>
+              </Descriptions.Item>
+              <Descriptions.Item label="建议措施" span={2}>
+                <div className="bg-green-50 p-3 rounded">
+                  <p className="text-sm text-green-800 font-medium">{selectedReport.action}</p>
+                </div>
+              </Descriptions.Item>
+              <Descriptions.Item label="报告ID" span={1}>
+                AI-RPT-{selectedReport.id.toString().padStart(4, '0')}
+              </Descriptions.Item>
+              <Descriptions.Item label="分析时间" span={1}>
+                {new Date().toLocaleString('zh-CN')}
+              </Descriptions.Item>
+              <Descriptions.Item label="模型版本" span={1}>
+                v2.4.1
+              </Descriptions.Item>
+              <Descriptions.Item label="数据源" span={1}>
+                多源融合分析
+              </Descriptions.Item>
+            </Descriptions>
+            
+            <div className="bg-gray-50 p-4 rounded">
+              <h4 className="font-semibold mb-2 flex items-center">
+                <BrainOutlined className="mr-2 text-blue-600" />
+                AI分析洞察
+              </h4>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="text-gray-600">威胁等级:</span>
+                  <Tag color={selectedReport.confidence > 90 ? 'red' : selectedReport.confidence > 80 ? 'orange' : 'yellow'} className="ml-2">
+                    {selectedReport.confidence > 90 ? '高' : selectedReport.confidence > 80 ? '中' : '低'}
+                  </Tag>
+                </div>
+                <div>
+                  <span className="text-gray-600">优先级:</span>
+                  <Tag color={selectedReport.type === '威胁预测' ? 'red' : 'blue'} className="ml-2">
+                    {selectedReport.type === '威胁预测' ? '紧急' : '重要'}
+                  </Tag>
+                </div>
+                <div>
+                  <span className="text-gray-600">自动化程度:</span>
+                  <span className="ml-2 text-green-600">完全自动化</span>
+                </div>
+                <div>
+                  <span className="text-gray-600">处理状态:</span>
+                  <span className="ml-2 text-blue-600">已执行</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   )
 }

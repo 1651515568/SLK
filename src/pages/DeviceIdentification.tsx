@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Card, Table, Tag, Button, Space, Input, Select, Row, Col, Modal, Descriptions, Statistic } from 'antd'
 import { SearchOutlined, EyeOutlined, ReloadOutlined } from '@ant-design/icons'
 import ReactECharts from 'echarts-for-react'
 import { DeviceInfo } from '@/types'
 import { generateMockDevices } from '@/utils/mockData'
+import VirtualScrollTable from '@/components/common/VirtualScrollTable'
+import LoadingState, { TableSkeleton, ChartSkeleton, StatCardSkeleton } from '@/components/common/LoadingState'
+import OptimizedChart from '@/components/common/OptimizedChart'
 
 const DeviceIdentification: React.FC = () => {
   const [devices, setDevices] = useState<DeviceInfo[]>([])
@@ -17,6 +20,11 @@ const DeviceIdentification: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const [batchActionModalVisible, setBatchActionModalVisible] = useState(false)
   const [currentBatchAction, setCurrentBatchAction] = useState<string>('')
+  const [loadingStates, setLoadingStates] = useState({
+    stats: false,
+    charts: false,
+    table: false
+  })
 
   useEffect(() => {
     loadDevices()
@@ -131,16 +139,17 @@ const DeviceIdentification: React.FC = () => {
   }
 
   // 设备统计图表配置
-  const getDeviceTypeChartOption = () => ({
+  const getDeviceTypeChartOption = useMemo(() => ({
     title: {
       text: '设备类型分布',
-      left: 'center'
+      left: 'center' as const
     },
     tooltip: {
-      trigger: 'item'
+      trigger: 'item' as const,
+      confine: true
     },
     series: [{
-      type: 'pie',
+      type: 'pie' as const,
       radius: '60%',
       data: [
         { value: devices.filter(d => d.deviceType === 'power_terminal').length, name: '电力专用终端' },
@@ -155,19 +164,20 @@ const DeviceIdentification: React.FC = () => {
         }
       }
     }]
-  })
+  }), [devices])
 
   // 风险等级分布图表配置
-  const getRiskLevelChartOption = () => ({
+  const getRiskLevelChartOption = useMemo(() => ({
     title: {
       text: '风险等级分布',
-      left: 'center'
+      left: 'center' as const
     },
     tooltip: {
-      trigger: 'item'
+      trigger: 'item' as const,
+      confine: true
     },
     series: [{
-      type: 'pie',
+      type: 'pie' as const,
       radius: '60%',
       data: [
         { value: devices.filter(d => d.riskLevel === 'low').length, name: '低风险' },
@@ -183,7 +193,7 @@ const DeviceIdentification: React.FC = () => {
         }
       }
     }]
-  })
+  }), [devices])
 
   const columns = [
     {
@@ -314,18 +324,28 @@ const DeviceIdentification: React.FC = () => {
       <Row gutter={[16, 16]}>
         <Col xs={24} lg={12}>
           <Card title="设备类型分布" className="security-card">
-            <ReactECharts 
-              option={getDeviceTypeChartOption()} 
-              style={{ height: '300px' }}
-            />
+            <LoadingState loading={loading} skeleton={false}>
+              <OptimizedChart
+                option={getDeviceTypeChartOption}
+                height={300}
+                loading={loading}
+                lazyUpdate={true}
+                animationDuration={300}
+              />
+            </LoadingState>
           </Card>
         </Col>
         <Col xs={24} lg={12}>
           <Card title="风险等级分布" className="security-card">
-            <ReactECharts 
-              option={getRiskLevelChartOption()} 
-              style={{ height: '300px' }}
-            />
+            <LoadingState loading={loading} skeleton={false}>
+              <OptimizedChart
+                option={getRiskLevelChartOption}
+                height={300}
+                loading={loading}
+                lazyUpdate={true}
+                animationDuration={300}
+              />
+            </LoadingState>
           </Card>
         </Col>
       </Row>
@@ -404,22 +424,18 @@ const DeviceIdentification: React.FC = () => {
           </Col>
         </Row>
 
-        {/* 设备表格 */}
-        <Table
-          columns={columns}
-          dataSource={filteredDevices}
-          rowKey="id"
-          loading={loading}
-          rowSelection={rowSelection}
-          pagination={{
-            total: filteredDevices.length,
-            pageSize: 10,
-            showSizeChanger: true,
-            showQuickJumper: true,
-            showTotal: (total) => `共 ${total} 条记录`,
-          }}
-          scroll={{ x: 1200 }}
-        />
+        {/* 设备表格 - 使用虚拟滚动优化 */}
+        <LoadingState loading={loading} skeleton={false}>
+          <VirtualScrollTable
+            dataSource={filteredDevices}
+            columns={columns}
+            loading={loading}
+            height={600}
+            rowHeight={60}
+            virtualScroll={filteredDevices.length > 100}
+            threshold={100}
+          />
+        </LoadingState>
       </Card>
 
       {/* 设备详情弹窗 */}

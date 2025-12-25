@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Card, Row, Col, Statistic, Table, Tag, Timeline, Progress } from 'antd'
 import {
   TrophyOutlined,
@@ -9,6 +9,8 @@ import {
 import ReactECharts from 'echarts-for-react'
 import { SecurityOverview as SecurityOverviewType, SecurityEvent, NetworkNode } from '@/types'
 import { generateMockSecurityData } from '@/utils/mockData'
+import LoadingState, { StatCardSkeleton, ChartSkeleton } from '@/components/common/LoadingState'
+import OptimizedChart, { RealtimeChart } from '@/components/common/OptimizedChart'
 
 const SecurityOverview: React.FC = () => {
   const [securityData, setSecurityData] = useState<SecurityOverviewType | null>(null)
@@ -54,12 +56,14 @@ const SecurityOverview: React.FC = () => {
   }
 
   // 网络拓扑图配置
-  const getNetworkTopologyOption = () => ({
+  const getNetworkTopologyOption = useMemo(() => ({
     tooltip: {},
     animation: true,
+    animationDuration: 500,
+    animationEasing: 'cubicOut' as const,
     series: [{
-      type: 'graph',
-      layout: 'force',
+      type: 'graph' as const,
+      layout: 'force' as const,
       data: networkNodes.map(node => ({
         id: node.id,
         name: node.name,
@@ -78,21 +82,29 @@ const SecurityOverview: React.FC = () => {
         repulsion: 1000,
         gravity: 0.1,
         edgeLength: 100
+      },
+      emphasis: {
+        focus: 'adjacency' as const,
+        label: {
+          show: true,
+          fontSize: 12
+        }
       }
     }]
-  })
+  }), [networkNodes])
 
   // 设备类型分布图配置
-  const getDeviceDistributionOption = () => ({
+  const getDeviceDistributionOption = useMemo(() => ({
     title: {
       text: '设备类型分布',
-      left: 'center'
+      left: 'center' as const
     },
     tooltip: {
-      trigger: 'item'
+      trigger: 'item' as const,
+      confine: true
     },
     series: [{
-      type: 'pie',
+      type: 'pie' as const,
       radius: '70%',
       data: [
         { value: securityData?.trustedDevices || 0, name: '可信设备' },
@@ -107,7 +119,7 @@ const SecurityOverview: React.FC = () => {
         }
       }
     }]
-  })
+  }), [securityData])
 
   // 实时事件表配置
   const eventColumns = [
@@ -199,17 +211,31 @@ const SecurityOverview: React.FC = () => {
       <Row gutter={[16, 16]}>
         <Col xs={24} lg={12}>
           <Card title="网络拓扑" className="security-card">
-            <ReactECharts 
-              option={getNetworkTopologyOption()} 
-              style={{ height: '400px' }}
+            <OptimizedChart
+              option={getNetworkTopologyOption}
+              height={400}
+              lazyUpdate={true}
+              animationDuration={800}
+              onChartReady={(chartInstance) => {
+                // 图表就绪后的性能优化
+                if (chartInstance) {
+                  chartInstance.setOption({
+                    animationDurationUpdate: 500,
+                    progressive: 1000,
+                    progressiveThreshold: 2000
+                  })
+                }
+              }}
             />
           </Card>
         </Col>
         <Col xs={24} lg={12}>
           <Card title="设备类型分布" className="security-card">
-            <ReactECharts 
-              option={getDeviceDistributionOption()} 
-              style={{ height: '400px' }}
+            <OptimizedChart
+              option={getDeviceDistributionOption}
+              height={400}
+              lazyUpdate={true}
+              animationDuration={500}
             />
           </Card>
         </Col>
